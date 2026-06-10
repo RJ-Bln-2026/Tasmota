@@ -1,4 +1,4 @@
-name: Tasmota C3 Build
+name: Tasmota32 Build
 on: [workflow_dispatch]
 jobs:
   build:
@@ -13,8 +13,8 @@ jobs:
         run: |
           pip install platformio
           cp ./platformio_override_sample.ini ./platformio_override.ini
-          platformio run -e tasmota32c3
+          platformio run -e tasmota32
       - uses: actions/upload-artifact@v4
         with:
           name: tasmota32c3-bin
-          path: ./build_output/firmware/tasmota32c3.bin
+          path: ./build_output/firmware/tasmota32.bin
