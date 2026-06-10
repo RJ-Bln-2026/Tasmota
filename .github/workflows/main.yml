@@ -1,4 +1,4 @@
-name: Tasmota Nous A8T Build
+name: Tasmota-Nous-A8T-Build
 on: [workflow_dispatch]
 jobs:
   build:
