@@ -10,13 +10,13 @@ jobs:
       - name: Setup-Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.13'
+          python-version: '3.11'
 
       - name: Build-Firmware
         run: |
           pip install platformio
           cp ./platformio_override_sample.ini ./platformio_override.ini
-          sed -i 's/;  tasmota32c3/   tasmota32c3/g' ./platformio_override.ini
+          sed -i 's/; default_envs = tasmota32c3/default_envs = tasmota32c3/g' ./platformio_override.ini
           platformio run -e tasmota32c3
 
       - uses: actions/upload-artifact@v7
