@@ -26,7 +26,6 @@
 
 #define USE_JSON
 #define USE_TLS
-#define USE_BERRY
 
 // --- Energie für NOUS A8T ---
 #define USE_ENERGY_SENSOR
