@@ -1,21 +1,25 @@
 name: Tasmota-Nous-A8T-Build
 on: [workflow_dispatch]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+
       - name: Setup-Python
         uses: actions/setup-python@v6
         with:
           python-version: '3.13'
+
       - name: Build-Firmware
         run: |
           pip install platformio
           cp ./platformio_override_sample.ini ./platformio_override.ini
-          sed -i 's/;  tasmota32/   tasmota32/g' ./platformio_override.ini
-          platformio run -e tasmota32
+          sed -i 's/;  tasmota32c3/   tasmota32c3/g' ./platformio_override.ini
+          platformio run -e tasmota32c3
+
       - uses: actions/upload-artifact@v7
         with:
           name: Tasmota-Nous-A8T
-          path: ./build_output/firmware/tasmota32.bin
+          path: ./.pio/build/tasmota32c3/firmware.bin
