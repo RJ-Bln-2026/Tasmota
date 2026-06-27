@@ -1,4 +1,4 @@
-// 002 config_override kleiner 1,5MB
+// 003 config_override kleiner 1,5MB
 
 #ifndef _USER_CONFIG_OVERRIDE_H_
 #define _USER_CONFIG_OVERRIDE_H_
@@ -19,6 +19,14 @@
 #undef USE_RC_SWITCH
 #undef USE_TUYA_MCU
 #undef USE_ZIGBEE
+#undef USE_EMAIL
+#undef USE_EMAIL_TLS
+
+
+
+#define USE_JSON
+#define USE_TLS
+#define USE_BERRY
 
 // --- Energie für NOUS A8T ---
 #define USE_ENERGY_SENSOR
@@ -33,6 +41,7 @@
 
 // --- Telegram via HTTPS (kleines TLS-Modul) ---
 #define USE_WEBSEND_TLS  // TLS für Berry-webclient (Telegram-API)
+#define USE_WEBCLIENT
 
 // --- Webserver (kompakt, aber vorhanden) ---
 #define USE_WEBSERVER
