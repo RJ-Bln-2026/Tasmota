@@ -17,7 +17,7 @@ jobs:
           pip install platformio
           cp ./platformio_override_sample.ini ./platformio_override.ini
           sed -i 's/; default_envs = tasmota32/default_envs = tasmota32/g' ./platformio_override.ini
-          platformio run -e tasmota32c3
+          platformio run -e tasmota32
 
       - uses: actions/upload-artifact@v7
         with:
