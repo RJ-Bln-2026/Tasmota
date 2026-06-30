@@ -13,15 +13,9 @@ jobs:
 
       - name: Download Tasmota 15.5.0.0 Source
         run: |
-          # Lädt den exakten Code der Version 15.5.0.0 direkt von GitHub herunter
           wget https://github.com
           tar -xzf v15.5.0.0.tar.gz --strip-components=1
           rm v15.5.0.0.tar.gz
-
-      - name: Move Custom Config
-        run: |
-          # Stellt sicher, dass deine user_config_override.h an der richtigen Stelle sitzt
-          cp tasmota/user_config_override.h ./tasmota/ 2>/dev/null || true
 
       - name: Set up Python
         uses: actions/setup-python@v5
