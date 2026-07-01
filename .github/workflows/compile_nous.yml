@@ -1,7 +1,7 @@
 name: Build Tasmota32 Nous A8T
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Ermöglicht den manuellen Start per Klick
 
 jobs:
   build:
@@ -10,12 +10,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Download Tasmota Source
-        run: |
-          wget https://github.com
-          tar -xzf v15.5.0.0.tar.gz --strip-components=1
-          rm v15.5.0.0.tar.gz
+        with:
+          submodules: recursive # Lädt alle Unterordner deines Repositories mit
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -29,6 +25,7 @@ jobs:
 
       - name: Run PlatformIO Build for ESP32
         run: |
+          # Nutzt deine vorhandene platformio.ini und deine user_config_override.h
           pio run -e tasmota32-DE
 
       - name: Upload Firmware Artifact
