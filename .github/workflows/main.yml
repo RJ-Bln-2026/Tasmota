@@ -15,11 +15,14 @@ jobs:
       - name: Build-Firmware
         run: |
           pip install platformio
+          # Kopiert das Sample, falls keine override existiert
           cp ./platformio_override_sample.ini ./platformio_override.ini
-          sed -i 's/; default_envs = tasmota32/default_envs = tasmota32/g' ./platformio_override.ini
-          platformio run -e tasmota32
+          # Aktiviert die Zeile für die deutsche Umgebung (tasmota32-DE)
+          sed -i 's/;default_envs = tasmota32/default_envs = tasmota32-DE/g' ./platformio_override.ini
+          # Startet das Build
+          pio run -e tasmota32-DE
 
       - uses: actions/upload-artifact@v7
         with:
           name: Tasmota-Nous-A8T
-          path: ./.pio/build/tasmota32/firmware.bin
+          path: ./.pio/build/tasmota32-DE/firmware.bin
