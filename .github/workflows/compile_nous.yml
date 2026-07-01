@@ -1,7 +1,7 @@
 name: Build Tasmota32 Nous A8T
 
 on:
-  workflow_dispatch: # Ermöglicht den manuellen Start per Klick
+  workflow_dispatch: # Manueller Start per Klick
 
 jobs:
   build:
@@ -11,7 +11,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          submodules: recursive # Lädt alle Unterordner deines Repositories mit
+          submodules: recursive
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -25,7 +25,8 @@ jobs:
 
       - name: Run PlatformIO Build for ESP32
         run: |
-          # Nutzt deine vorhandene platformio.ini und deine user_config_override.h
+          # Erzwingt die Nutzung deiner fertigen user_config_override.h
+          export PLATFORMIO_BUILD_FLAGS="-DUSE_CONFIG_OVERRIDE"
           pio run -e tasmota32-DE
 
       - name: Upload Firmware Artifact
