@@ -1,4 +1,4 @@
-// 005 config_override für NOUS A8T (ESP32) - Optimiert für v15.5.0.0
+// 007 config_override für NOUS A8T (ESP32) - Optimiert für v15.5.0.0
 #ifndef _USER_CONFIG_OVERRIDE_H_
 #define _USER_CONFIG_OVERRIDE_H_
 
