@@ -25,8 +25,7 @@ jobs:
 
       - name: Run PlatformIO Build for ESP32
         run: |
-          # Erzwingt die Nutzung deiner fertigen user_config_override.h
-          export PLATFORMIO_BUILD_FLAGS="-DUSE_CONFIG_OVERRIDE"
+          # Baut dein deutsches Tasmota32 direkt mit deiner gecheckten Konfiguration
           pio run -e tasmota32-DE
 
       - name: Upload Firmware Artifact
