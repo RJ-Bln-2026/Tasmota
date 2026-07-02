@@ -12,11 +12,17 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Build-Firmware
+      - name: Prepare PlatformIO
         run: |
           pip install platformio
           cp ./platformio_override_sample.ini ./platformio_override.ini
           sed -i 's/;default_envs = tasmota32/default_envs = tasmota32-DE/g' ./platformio_override.ini
+          
+          # Variable global für alle nachfolgenden Schritte sichern
+          echo "PLATFORMIO_BUILD_FLAGS=-DUSE_CONFIG_OVERRIDE" >> $GITHUB_ENV
+
+      - name: Run Build
+        run: |
           pio run -e tasmota32-DE
 
       - uses: actions/upload-artifact@v4
