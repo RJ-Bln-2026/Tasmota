@@ -18,12 +18,16 @@ jobs:
           pip install platformio
           cp ./platformio_override_sample.ini ./platformio_override.ini
           
-          # Zurück auf Standard: default_envs bleibt strikt auf tasmota32 (EN-Original)
+          # 1. default_envs bleibt strikt auf tasmota32 (EN-Original)
           sed -i 's/;default_envs = tasmota32/default_envs = tasmota32/g' ./platformio_override.ini
 
-          # Erzwingt das Einlesen der config_override.h direkt im Standard-Environment
+          # 2. Hinzufügen der Sektion für das Standard-Environment
+          echo "" >> ./platformio_override.ini
           echo "[env:tasmota32]" >> ./platformio_override.ini
-          echo "build_flags = -DUSE_CONFIG_OVERRIDE" >> ./platformio_override.ini
+          
+          # 3. SICHERHEITS-CHECK ERFÜLLT: Bestehende Flags werden geerbt (${env.build_flags}) 
+          # und dein Config-Override wird sicher hinten angehängt!
+          echo "build_flags = \${env.build_flags} -DUSE_CONFIG_OVERRIDE" >> ./platformio_override.ini
 
       - name: Run Build
         run: |
