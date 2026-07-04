@@ -1,26 +1,28 @@
-// 008a config_override für NOUS A8T (ESP32 Dual-Core) - Optimiert für EN-Original v15.5.0.1 mit jetzt RTC
+// 008b config_override für NOUS A8T (ESP32 Dual-Core) - Optimiert für EN-Original v15.5.0.1 mit RTC
 
 #ifndef _USER_CONFIG_OVERRIDE_H_
 #define _USER_CONFIG_OVERRIDE_H_
 
 // --- Logik für dein Watchdog-Script & TLS ---
 #ifndef USE_BERRY
-#define USE_BERRY        // Berry Scripting (Auf ESP32 standardmäßig aktiv, hier erzwungen)
+#define USE_BERRY              // Berry Scripting aktivieren
 #endif
 #ifndef USE_UFILESYS
-#define USE_UFILESYS     // ZWINGEND ERFORDERLICH für Dateizugriff (autoexec.be)
+#define USE_UFILESYS           // ZWINGEND ERFORDERLICH für Dateizugriff (autoexec.be)
 #endif
 #ifndef USE_TLS
-#define USE_TLS          // TLS-Unterstützung für HTTPS/Telegram aktivieren
-#endif
-#ifndef USE_WEBSEND_TLS
-#define USE_WEBSEND_TLS  // TLS für Berry-webclient (Telegram-API)
-#endif
-#ifndef USE_WEBCLIENT
-#define USE_WEBCLIENT    // Ermöglicht HTTP/HTTPS-Requests im Hintergrund
+#define USE_TLS                // TLS-Unterstützung für HTTPS/Telegram aktivieren
 #endif
 
-// --- RTC-RAM / Berry-RTC (NEU ergänzt, sonst nichts geändert) ---
+// --- NATIVE BERRY WEBCLIENT EXTENSIONS (KORREKTUR FÜR v15+) ---
+#ifndef USE_BERRY_WEBCLIENT
+#define USE_BERRY_WEBCLIENT    // Bindet die HTTP-Klasse exakt als 'webclient' in Berry ein
+#endif
+#ifndef USE_BERRY_HTTP_TLS
+#define USE_BERRY_HTTP_TLS     // Schaltet HTTPS/TLS-Verschlüsselung für das Berry-Modul frei
+#endif
+
+// --- RTC-RAM / Berry-RTC (Optimiert für Tasmota32 Core Variables) ---
 #ifndef USE_RTC
 #define USE_RTC                // Grundlegende RTC-Unterstützung
 #endif
@@ -42,16 +44,16 @@
 #define USE_JSON
 #endif
 #ifndef USE_PING
-#define USE_PING         // Ping-Auswertung für Watchdog
+#define USE_PING               // Ping-Auswertung für Watchdog
 #endif
 #ifndef USE_RULES
-#define USE_RULES        // Button-/Ping-Events
+#define USE_RULES              // Button-/Ping-Events
 #endif
 #ifndef USE_TIMERS
-#define USE_TIMERS       // Tasmota-Timer
+#define USE_TIMERS             // Tasmota-Timer
 #endif
 #ifndef USE_CRON
-#define USE_CRON         // Zeitsteuerung via Cron
+#define USE_CRON               // Zeitsteuerung via Cron
 #endif
 
 // --- Energie für NOUS A8T ---
@@ -62,15 +64,15 @@
 #define USE_ENERGY_MARGIN_DETECTION
 #endif
 #ifndef USE_BL0942
-#define USE_BL0942       // Wichtig für neuere Nous A8T Versionen
+#define USE_BL0942             // Wichtig für neuere Nous A8T Versionen
 #endif
 #ifndef USE_HLW8012
-#define USE_HLW8012      // Wichtig für ältere Nous A8T Versionen
+#define USE_HLW8012            // Wichtig für ältere Nous A8T Versionen
 #endif
 
 // --- Taster-Mehrfachklicks aktivieren ---
 #ifndef MULTI_PRESS
-#define MULTI_PRESS 5    // Ermöglicht Doppelklick/Dreifachklick-Szenarien ohne MQTT
+#define MULTI_PRESS 5          // Ermöglicht Doppelklick/Dreifachklick-Szenarien ohne MQTT
 #endif
 
 // --- Webserver & Zeit ---
