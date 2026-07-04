@@ -1,5 +1,4 @@
-# 008a main.yml für Tasmota32-DE V15.5.0.1 für EN-Originalversion
-
+# 008b main.yml für Tasmota32-DE V15.5.0.1 für EN-Originalversion
 name: Tasmota-Nous-A8T-Build
 on: [workflow_dispatch]
 
@@ -19,17 +18,19 @@ jobs:
           pip install platformio
           cp ./platformio_override_sample.ini ./platformio_override.ini
           
-          # EN-Original aktivieren (RTC-kompatibel)
-          sed -i 's/;default_envs = tasmota32/default_envs = tasmota32/g' ./platformio_override.ini
+          # KORREKTUR 1: Setzt das Environment zwingend auf die Custom-Variante, um config_override.h einzulesen
+          sed -i 's/;default_envs = tasmota32/default_envs = tasmota32_custom/g' ./platformio_override.ini
+          sed -i 's/default_envs = tasmota32/default_envs = tasmota32_custom/g' ./platformio_override.ini
 
-          # config_override aktivieren
-          echo "PLATFORMIO_BUILD_FLAGS=-DUSE_CONFIG_OVERRIDE" >> $GITHUB_ENV
+          # KORREKTUR 2: Schreibt das Config-Override-Flag bombensicher direkt in die platformio_override.ini
+          echo "build_flags = -DUSE_CONFIG_OVERRIDE" >> ./platformio_override.ini
 
       - name: Run Build
         run: |
-          pio run -e tasmota32
+          # KORREKTUR 3: Führt den Build exakt für das Custom-Target aus
+          pio run -e tasmota32_custom
 
       - uses: actions/upload-artifact@v4
         with:
           name: Tasmota-Nous-A8T
-          path: ./.pio/build/tasmota32/firmware.bin
+          path: ./.pio/build/tasmota32_custom/firmware.bin
