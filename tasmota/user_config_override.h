@@ -1,4 +1,5 @@
-// 007 config_override für NOUS A8T (ESP32) - Optimiert für v15.5.0.0
+// 008a config_override für NOUS A8T (ESP32 Dual-Core) - Optimiert für EN-Original v15.5.0.1 mit jetzt RTC
+
 #ifndef _USER_CONFIG_OVERRIDE_H_
 #define _USER_CONFIG_OVERRIDE_H_
 
@@ -17,6 +18,23 @@
 #endif
 #ifndef USE_WEBCLIENT
 #define USE_WEBCLIENT    // Ermöglicht HTTP/HTTPS-Requests im Hintergrund
+#endif
+
+// --- RTC-RAM / Berry-RTC (NEU ergänzt, sonst nichts geändert) ---
+#ifndef USE_RTC
+#define USE_RTC                // Grundlegende RTC-Unterstützung
+#endif
+#ifndef USE_RTC_MEM
+#define USE_RTC_MEM            // RTC-Speicherbereich aktivieren
+#endif
+#ifndef USE_RTC_FAST_MEM
+#define USE_RTC_FAST_MEM       // Fast-RAM für Berry
+#endif
+#ifndef USE_RTC_VARIABLES
+#define USE_RTC_VARIABLES      // tasmota.rtc_get / rtc_set aktivieren
+#endif
+#ifndef USE_BERRY_RTC
+#define USE_BERRY_RTC          // Berry-Bindings für RTC aktivieren
 #endif
 
 // --- Protokolle & Module ---
