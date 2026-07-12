@@ -1,39 +1,74 @@
 name: Tasmota32 Build
+# ---------------------------------------------------------
+# Dieser Workflow baut deine Tasmota32-Firmware in der Cloud
+# und speichert ALLE wichtigen Dateien als Artefakte:
+#  - firmware.bin
+#  - bootloader.bin (Safeboot)
+#  - partitions.bin
+#  - kompletter Build-Ordner
+# Damit kannst du ALLES direkt im Browser auf dem iPad laden.
+# ---------------------------------------------------------
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:     # Manuell starten über GitHub Actions
   push:
     branches:
-      - main
+      - main             # Automatischer Build bei Push auf "main"
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest   # GitHub Runner (Linux)
 
     steps:
+      # -----------------------------------------------------
+      # 1. Repository auschecken
+      #    Holt deinen Code inkl. platformio.ini,
+      #    platformio_override.ini und user_config_override.h
+      # -----------------------------------------------------
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # -----------------------------------------------------
+      # 2. PlatformIO installieren
+      #    Ohne PlatformIO kann der Runner nicht bauen.
+      # -----------------------------------------------------
       - name: Install PlatformIO
         run: pip install platformio
 
+      # -----------------------------------------------------
+      # 3. Tasmota32 Build starten
+      #    Baut das Environment "tasmota32"
+      #    → erzeugt firmware.bin, bootloader.bin, partitions.bin
+      # -----------------------------------------------------
       - name: Run Tasmota32 build
         run: pio run -e tasmota32
 
+      # -----------------------------------------------------
+      # 4. Neue firmware.bin als Artefakt speichern
+      #    → Diese Datei kannst du später im Browser herunterladen.
+      # -----------------------------------------------------
       - name: Upload firmware.bin
         uses: actions/upload-artifact@v3
         with:
           name: firmware-bin
           path: .pio/build/tasmota32/firmware.bin
 
-      - name: Upload safeboot.bin
+      # -----------------------------------------------------
+      # 5. Safeboot / Bootloader speichern
+      #    → Wird für vollständige Flash-Sets benötigt.
+      # -----------------------------------------------------
+      - name: Upload bootloader.bin
         uses: actions/upload-artifact@v3
         with:
-          name: safeboot-bin
+          name: bootloader-bin
           path: .pio/build/tasmota32/bootloader.bin
 
-      - name: Upload full build folder
+      # -----------------------------------------------------
+      # 6. Partitions-Datei speichern
+      #    → Wichtig für vollständige Firmware-Sets.
+      # -----------------------------------------------------
+      - name: Upload partitions.bin
         uses: actions/upload-artifact@v3
         with:
-          name: full-build-folder
-          path: .pio/build/tasmota32/
+          name: partitions-bin
+          path: .pio/build/tasmota32/partitions
