@@ -1,4 +1,4 @@
-// 008b config_override für NOUS A8T (ESP32 Dual-Core) - Optimiert für EN-Original v15.5.0.1 mit RTC
+// 0011xx config_override für NOUS A8T (ESP32 Dual-Core) - Optimiert für EN-Original v15.5.0.1 mit RTC Telegram
 
 #ifndef _USER_CONFIG_OVERRIDE_H_
 #define _USER_CONFIG_OVERRIDE_H_
@@ -54,6 +54,17 @@
 #endif
 #ifndef USE_CRON
 #define USE_CRON               // Zeitsteuerung via Cron
+#endif
+
+// --- TELEGRAM (ERGÄNZUNG) ---
+#ifndef USE_TELEGRAM
+#define USE_TELEGRAM
+#endif
+#ifndef USE_WEBCLIENT
+#define USE_WEBCLIENT
+#endif
+#ifndef USE_HTTPS
+#define USE_HTTPS
 #endif
 
 // --- Energie für NOUS A8T ---
