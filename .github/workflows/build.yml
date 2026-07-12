@@ -1,23 +1,14 @@
 name: Tasmota32 Build
-# ---------------------------------------------------------
-# Dieser Workflow baut deine Tasmota32-Firmware in der Cloud
-# und speichert ALLE wichtigen Dateien als Artefakte:
-#  - firmware.bin
-#  - bootloader.bin (Safeboot)
-#  - partitions.bin
-#  - kompletter Build-Ordner
-# Damit kannst du ALLES direkt im Browser auf dem iPad laden.
-# ---------------------------------------------------------
 
 on:
-  workflow_dispatch:     # Manuell starten über GitHub Actions
+  workflow_dispatch:
   push:
     branches:
-      - main             # Automatischer Build bei Push auf "main"
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest   # GitHub Runner (Linux)
+    runs-on: ubuntu-latest
 
     steps:
       # -----------------------------------------------------
@@ -39,37 +30,48 @@ jobs:
         run: pio run -e tasmota32
 
       # -----------------------------------------------------
-      # 4. Neue firmware.bin als Artefakt speichern
+      # 4. Artefakt-Ordner erstellen (ohne .pio)
       # -----------------------------------------------------
-      - name: Upload firmware.bin
-        uses: actions/upload-artifact@v3
-        with:
-          name: firmware-bin
-          path: .pio/build/tasmota32/firmware.bin
+      - name: Create artifact folder
+        run: mkdir -p artifacts
 
       # -----------------------------------------------------
-      # 5. Bootloader (Safeboot) speichern
+      # 5. ALLE relevanten Dateien in den Artefakt-Ordner kopieren
       # -----------------------------------------------------
-      - name: Upload bootloader.bin
-        uses: actions/upload-artifact@v3
-        with:
-          name: bootloader-bin
-          path: .pio/build/tasmota32/bootloader.bin
+
+      # Firmware
+      - name: Copy firmware.bin
+        run: cp .pio/build/tasmota32/firmware.bin artifacts/
+
+      # Bootloader
+      - name: Copy bootloader.bin
+        run: cp .pio/build/tasmota32/bootloader.bin artifacts/
+
+      # Partitions
+      - name: Copy partitions.bin
+        run: cp .pio/build/tasmota32/partitions.bin artifacts/
+
+      # Safeboot aus variants
+      - name: Copy safeboot.bin
+        run: cp variants/tasmota/tasmota32-safeboot.bin artifacts/
+
+      # ELF (Debug)
+      - name: Copy firmware.elf
+        run: cp .pio/build/tasmota32/firmware.elf artifacts/
+
+      # Boot_app0
+      - name: Copy boot_app0.bin
+        run: cp /home/runner/.platformio/packages/framework-arduinoespressif32/tools/partitions/boot_app0.bin artifacts/
+
+      # Full build folder (optional, aber ALLES drin)
+      - name: Copy full build folder
+        run: cp -r .pio/build/tasmota32 artifacts/full_build
 
       # -----------------------------------------------------
-      # 6. Partitions-Datei speichern
+      # 6. Artefakt hochladen (alles drin)
       # -----------------------------------------------------
-      - name: Upload partitions.bin
+      - name: Upload all artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: partitions-bin
-          path: .pio/build/tasmota32/partitions.bin
-
-      # -----------------------------------------------------
-      # 7. Optional: kompletter Build-Ordner
-      # -----------------------------------------------------
-      - name: Upload full build folder
-        uses: actions/upload-artifact@v3
-        with:
-          name: full-build-folder
-          path: .pio/build/tasmota32/
+          name: tasmota32-complete-build
+          path: artifacts/
