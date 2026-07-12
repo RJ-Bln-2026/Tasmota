@@ -1,0 +1,39 @@
+name: Tasmota32 Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install PlatformIO
+        run: pip install platformio
+
+      - name: Run Tasmota32 build
+        run: pio run -e tasmota32
+
+      - name: Upload firmware.bin
+        uses: actions/upload-artifact@v3
+        with:
+          name: firmware-bin
+          path: .pio/build/tasmota32/firmware.bin
+
+      - name: Upload safeboot.bin
+        uses: actions/upload-artifact@v3
+        with:
+          name: safeboot-bin
+          path: .pio/build/tasmota32/bootloader.bin
+
+      - name: Upload full build folder
+        uses: actions/upload-artifact@v3
+        with:
+          name: full-build-folder
+          path: .pio/build/tasmota32/
