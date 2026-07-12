@@ -22,30 +22,24 @@ jobs:
     steps:
       # -----------------------------------------------------
       # 1. Repository auschecken
-      #    Holt deinen Code inkl. platformio.ini,
-      #    platformio_override.ini und user_config_override.h
       # -----------------------------------------------------
       - name: Checkout repository
         uses: actions/checkout@v3
 
       # -----------------------------------------------------
       # 2. PlatformIO installieren
-      #    Ohne PlatformIO kann der Runner nicht bauen.
       # -----------------------------------------------------
       - name: Install PlatformIO
         run: pip install platformio
 
       # -----------------------------------------------------
       # 3. Tasmota32 Build starten
-      #    Baut das Environment "tasmota32"
-      #    → erzeugt firmware.bin, bootloader.bin, partitions.bin
       # -----------------------------------------------------
       - name: Run Tasmota32 build
         run: pio run -e tasmota32
 
       # -----------------------------------------------------
       # 4. Neue firmware.bin als Artefakt speichern
-      #    → Diese Datei kannst du später im Browser herunterladen.
       # -----------------------------------------------------
       - name: Upload firmware.bin
         uses: actions/upload-artifact@v3
@@ -54,8 +48,7 @@ jobs:
           path: .pio/build/tasmota32/firmware.bin
 
       # -----------------------------------------------------
-      # 5. Safeboot / Bootloader speichern
-      #    → Wird für vollständige Flash-Sets benötigt.
+      # 5. Bootloader (Safeboot) speichern
       # -----------------------------------------------------
       - name: Upload bootloader.bin
         uses: actions/upload-artifact@v3
@@ -65,10 +58,18 @@ jobs:
 
       # -----------------------------------------------------
       # 6. Partitions-Datei speichern
-      #    → Wichtig für vollständige Firmware-Sets.
       # -----------------------------------------------------
       - name: Upload partitions.bin
         uses: actions/upload-artifact@v3
         with:
           name: partitions-bin
-          path: .pio/build/tasmota32/partitions
+          path: .pio/build/tasmota32/partitions.bin
+
+      # -----------------------------------------------------
+      # 7. Optional: kompletter Build-Ordner
+      # -----------------------------------------------------
+      - name: Upload full build folder
+        uses: actions/upload-artifact@v3
+        with:
+          name: full-build-folder
+          path: .pio/build/tasmota32/
