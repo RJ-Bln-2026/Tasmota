@@ -13,6 +13,9 @@
 #ifndef USE_TLS
 #define USE_TLS                // TLS-Unterstützung für HTTPS/Telegram aktivieren
 #endif
+#ifndef USE_WEBSEND_TLS
+#define USE_WEBSEND_TLS
+#endif
 
 // --- NATIVE BERRY WEBCLIENT EXTENSIONS (KORREKTUR FÜR v15+) ---
 #ifndef USE_BERRY_WEBCLIENT
