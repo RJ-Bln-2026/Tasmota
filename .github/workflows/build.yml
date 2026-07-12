@@ -11,66 +11,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # -----------------------------------------------------
-      # 1. Repository auschecken
-      # -----------------------------------------------------
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # -----------------------------------------------------
-      # 2. PlatformIO installieren
-      # -----------------------------------------------------
       - name: Install PlatformIO
         run: pip install platformio
 
-      # -----------------------------------------------------
-      # 3. Tasmota32 Build starten
-      # -----------------------------------------------------
       - name: Run Tasmota32 build
         run: pio run -e tasmota32
 
       # -----------------------------------------------------
-      # 4. Artefakt-Ordner erstellen (ohne .pio)
+      # Artefakt-Ordner erstellen
       # -----------------------------------------------------
       - name: Create artifact folder
-        run: mkdir -p artifacts
+        run: mkdir -p artifacts/full_build
 
       # -----------------------------------------------------
-      # 5. ALLE relevanten Dateien in den Artefakt-Ordner kopieren
+      # ALLE Dateien aus dem Build kopieren
       # -----------------------------------------------------
 
-      # Firmware
-      - name: Copy firmware.bin
-        run: cp .pio/build/tasmota32/firmware.bin artifacts/
+      # 1. Alles aus .pio/build/tasmota32/
+      - name: Copy full build output
+        run: cp -r .pio/build/tasmota32/* artifacts/full_build/
 
-      # Bootloader
-      - name: Copy bootloader.bin
-        run: cp .pio/build/tasmota32/bootloader.bin artifacts/
-
-      # Partitions
-      - name: Copy partitions.bin
-        run: cp .pio/build/tasmota32/partitions.bin artifacts/
-
-      # Safeboot aus variants
+      # 2. Safeboot aus variants
       - name: Copy safeboot.bin
-        run: cp variants/tasmota/tasmota32-safeboot.bin artifacts/
+        run: cp variants/tasmota/tasmota32-safeboot.bin artifacts/full_build/
 
-      # ELF (Debug)
-      - name: Copy firmware.elf
-        run: cp .pio/build/tasmota32/firmware.elf artifacts/
-
-      # Boot_app0
+      # 3. Boot_app0 aus Framework
       - name: Copy boot_app0.bin
-        run: cp /home/runner/.platformio/packages/framework-arduinoespressif32/tools/partitions/boot_app0.bin artifacts/
-
-      # Full build folder (optional, aber ALLES drin)
-      - name: Copy full build folder
-        run: cp -r .pio/build/tasmota32 artifacts/full_build
+        run: cp /home/runner/.platformio/packages/framework-arduinoespressif32/tools/partitions/boot_app0.bin artifacts/full_build/
 
       # -----------------------------------------------------
-      # 6. Artefakt hochladen (alles drin)
+      # Artefakt hochladen (alles drin)
       # -----------------------------------------------------
-      - name: Upload all artifacts
+      - name: Upload ALL build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: tasmota32-complete-build
